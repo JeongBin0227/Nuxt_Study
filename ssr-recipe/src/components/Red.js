@@ -1,8 +1,9 @@
-import React from 'react';
 import './Red.css';
 
+import React from 'react';
+
 const Red = () => {
-  return <Red className='Red'>Red</Red>;
+  return <div className='Red'>Red</div>;
 };
 
 export default Red;
