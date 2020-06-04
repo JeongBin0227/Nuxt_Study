@@ -1,26 +1,25 @@
-const nodeExternals = require('webpack-node-externals');
 const paths = require('./paths');
+const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
+const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
 const getClientEnvironment = require('./env');
-const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
-const publicUrl = paths.publicUrlOrPath.slice(0, -1);
-const env = getClientEnvironment(publicUrl);
+const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
 module.exports = {
-  mode: 'production', // 프로덕션 모드로 설정하여 최적화 옵션들을 활성화
-  entry: paths.ssrIndexJs, // 엔트리 경로
-  target: 'node', // node 환경에서 실행 될 것이라는 것을 명시
+  mode: 'production',
+  entry: paths.ssrIndexJs,
+  target: 'node',
   output: {
-    path: paths.ssrBuild, // 빌드 경로
-    filename: 'server.js', // 파일이름
-    chunkFilename: 'js/[name].chunk.js', // 청크 파일이름
-    publicPath: paths.publicUrlOrPath // 정적 파일이 제공 될 경로
+    path: paths.ssrBuild,
+    filename: 'server.js',
+    chunkFilename: 'js/[name].chunk.js',
+    publicPath: paths.publicUrlOrPath
   },
   module: {
     rules: [
@@ -58,10 +57,10 @@ module.exports = {
           {
             test: cssRegex,
             exclude: cssModuleRegex,
-            //  exportOnlyLocals: true 옵션을 설정해야 실제 css 파일을 생성하지 않습니다.
+            //  onlyLocals: true 옵션을 설정해야 실제 css 파일을 생성하지 않습니다.
             loader: require.resolve('css-loader'),
             options: {
-              exportOnlyLocals: true
+              onlyLocals: true
             }
           },
           // CSS Module 을 위한 처리
@@ -70,7 +69,7 @@ module.exports = {
             loader: require.resolve('css-loader'),
             options: {
               modules: true,
-              exportOnlyLocals: true,
+              onlyLocals: true,
               getLocalIdent: getCSSModuleLocalIdent
             }
           },
@@ -82,7 +81,7 @@ module.exports = {
               {
                 loader: require.resolve('css-loader'),
                 options: {
-                  exportOnlyLocals: true
+                  onlyLocals: true
                 }
               },
               require.resolve('sass-loader')
@@ -97,7 +96,7 @@ module.exports = {
                 loader: require.resolve('css-loader'),
                 options: {
                   modules: true,
-                  exportOnlyLocals: true,
+                  onlyLocals: true,
                   getLocalIdent: getCSSModuleLocalIdent
                 }
               },
