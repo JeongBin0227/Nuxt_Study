@@ -1,22 +1,27 @@
-import './index.css';
+import "./index.css";
 
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from "./serviceWorker";
 
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, createStore } from "redux";
+import rootReducer, { rootSaga } from "./modules";
 
-import App from './App';
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import rootReducer from './modules';
-import thunk from 'redux-thunk';
+import App from "./App";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import React from "react";
+import ReactDOM from "react-dom";
+import createSagaMiddleware from "redux-saga";
+import thunk from "redux-thunk";
+
+const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   rootReducer,
   window.__PRELOADED_STATE__, // 이 값을 초기상태로 사용함
-  applyMiddleware(thunk)
+  applyMiddleware(thunk, sagaMiddleware)
 );
+
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -24,7 +29,7 @@ ReactDOM.render(
       <App />
     </BrowserRouter>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
